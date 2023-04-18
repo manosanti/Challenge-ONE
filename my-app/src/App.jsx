@@ -25,10 +25,12 @@ function App() {
       </TypeText>
 
       <ShowText>
+        <div>
         <img src={NotFoundText} alt='' />
         <h1>Nenhuma mensagem encontrada</h1>
         <p>Digite um texto que você deseja<br></br>
           criptografar ou descriptografar.</p>
+        </div>
       </ShowText>
     </Container>
   )
@@ -55,16 +57,22 @@ const ShowText = styled.div`
     margin-left: 6%;
 
     img {
-      margin: 0 auto;
+    margin: 0 auto;
+    margin-bottom: 30px;
     }
 
     h1 {
       color: #343A40;
+      margin-bottom: 10px;
     }
 
     p {
       color: #495057;
       font-weight: 500;
+    }
+
+    div {
+      margin: auto 0;
     }
 `
 
@@ -84,7 +92,7 @@ const Buttons = styled.div`
     bottom: 10%;
 
     div {
-      margin-bottom: 10px;
+      padding-bottom: 10px;
       display: flex;
       
       p {
