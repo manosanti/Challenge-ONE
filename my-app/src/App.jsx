@@ -10,8 +10,8 @@ function App() {
       <img src={Logo} alt='Alura Logo' style={{position: 'fixed'}} />
 
       <TypeText>
-        <h1>Digite seu texto:</h1>
-
+        <textarea placeholder='Digite aqui o texto'></textarea>
+        
         <Buttons>
           <div>
             <img src={CautionIcon} alt='' />
@@ -25,7 +25,7 @@ function App() {
       </TypeText>
 
       <ShowText>
-        <div>
+        <div id='uncryptCard'>
         <img src={NotFoundText} alt='' />
         <h1>Nenhuma mensagem encontrada</h1>
         <p>Digite um texto que você deseja<br></br>
@@ -79,11 +79,26 @@ const ShowText = styled.div`
 const TypeText = styled.div`
     padding-left: 10%;
 
-    h1 {
+    textarea {
+      padding: 2%;
+      border: none;
+      border-radius: 15px;
+      resize: none;
+      background-color: #d8dfe83d;
       top: 10%;
+      font-weight: 600;
+      color: #0A3871;
+      font-size: 30px;
       position: relative;
       font-weight: 400;
+      width: 700px;
+      height: 70%;
+    }
+    
+    textarea:focus {
       color: #0A3871;
+      outline: none;
+      border: 2px solid #0A3871;
     }
 `
 
