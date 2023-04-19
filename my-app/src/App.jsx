@@ -1,35 +1,78 @@
 import './App.css'
 import styled from 'styled-components'
-import Logo from '../public/img/AluraLogo.svg'
-import NotFoundText from '../public/img/NotFoundText.svg'
-import CautionIcon from '../public/img/Caution.svg'
+import Logo from '../src/img/AluraLogo.svg'
+import NotFoundText from '../src/img/NotFoundText.svg'
+import CautionIcon from '../src/img/Caution.svg'
+import CryptoJS from 'crypto-js'
+import { useState } from 'react'
 
 function App() {
+  const [texto, setTexto] = useState("");
+  const [textoCriptografado, setTextoCriptografado] = useState("");
+  const [imagemExibida, setImagemExibida] = useState(true);
+  const [textoExibido, setTextoExibido] = useState(true);
+
+  const handleCriptografar = () => {
+    const textoCript = CryptoJS.AES.encrypt(texto, "chave secreta").toString()
+    setTextoCriptografado(textoCript)
+  }
+
+  const handleDescriptografar = () => {
+    try {
+      const bytes = CryptoJS.AES.decrypt(textoCriptografado, "chave secreta")
+      const textoDescriptografado = bytes.toString(CryptoJS.enc.Utf8)
+      setTextoCriptografado(textoDescriptografado)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handleBotaoClicado = () => {
+    setImagemExibida(false);
+    setTextoExibido(false);
+  }
+    
+  const handleCriptografarEClicado = () => {
+    handleCriptografar()
+    handleBotaoClicado()
+  }
+  
+  const handleDescriptografarEClicado = () => {
+    handleDescriptografar()
+    handleBotaoClicado()
+  }
+
   return (
     <Container>
       <img src={Logo} alt='Alura Logo' style={{position: 'fixed'}} />
 
       <TypeText>
-        <textarea placeholder='Digite aqui o texto'></textarea>
-        
+        <textarea value={texto} onChange={(e) => setTexto(e.target.value)} placeholder='Digite aqui o texto'></textarea>
+
         <Buttons>
           <div>
             <img src={CautionIcon} alt='' />
             <p>Apenas letras minúsculas e sem acento.</p>
           </div>
           <div>
-            <button className='colorButton'>Criptografar</button>
-            <button className='notColorButton'>Descriptografar</button>
+            <button onClick={handleCriptografarEClicado} className='colorButton'>Criptografar</button>
+            <button onClick={handleDescriptografarEClicado} className='notColorButton'>Descriptografar</button>
           </div>
         </Buttons>
       </TypeText>
 
       <ShowText>
-        <div id='uncryptCard'>
-        <img src={NotFoundText} alt='' />
-        <h1>Nenhuma mensagem encontrada</h1>
-        <p>Digite um texto que você deseja<br></br>
-          criptografar ou descriptografar.</p>
+        <div>
+          {imagemExibida &&
+          <img src={NotFoundText} alt='' />}
+
+          <h1 className='textoCriptografado'>{textoCriptografado}</h1>
+          
+          {textoExibido &&
+          <h1>Nenhuma mensagem encontrada</h1>}
+          {textoExibido &&
+          <p>Digite um texto que você deseja<br></br>
+            criptografar ou descriptografar.</p>}
         </div>
       </ShowText>
     </Container>

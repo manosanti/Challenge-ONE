@@ -18,3 +18,12 @@
     color: #0A3871;
     background-color: #D8DFE8;
 }
+
+.textoCriptografado {
+    overflow-x: hidden;
+    overflow-y: hidden;
+    margin: 0 auto;
+    text-align: center;
+    width: 100%;
+    height: min-content;
+}
