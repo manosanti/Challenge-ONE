@@ -13,19 +13,46 @@ function App() {
   const [textoExibido, setTextoExibido] = useState(true);
 
   const handleCriptografar = () => {
-    const textoCript = CryptoJS.AES.encrypt(texto, "chave secreta").toString()
-    setTextoCriptografado(textoCript)
-  }
-
-  const handleDescriptografar = () => {
-    try {
-      const bytes = CryptoJS.AES.decrypt(textoCriptografado, "chave secreta")
-      const textoDescriptografado = bytes.toString(CryptoJS.enc.Utf8)
-      setTextoCriptografado(textoDescriptografado)
-    } catch (error) {
-      console.log(error)
+    const chave = 3; // quantidade de casas que a letra será deslocada
+    let textoCript = "";
+    for (let i = 0; i < texto.length; i++) {
+      let letra = texto.charAt(i);
+      if (letra.match(/[a-z]/i)) {
+        // se a letra for uma letra do alfabeto
+        let codigo = texto.charCodeAt(i);
+        if (codigo >= 65 && codigo <= 90) {
+          // letra maiúscula
+          letra = String.fromCharCode(((codigo - 65 + chave) % 26) + 65);
+        } else if (codigo >= 97 && codigo <= 122) {
+          // letra minúscula
+          letra = String.fromCharCode(((codigo - 97 + chave) % 26) + 97);
+        }
+      }
+      textoCript += letra;
     }
-  }
+    setTextoCriptografado(textoCript);
+  };
+  
+  const handleDescriptografar = () => {
+    const chave = 3; // quantidade de casas que a letra foi deslocada
+    let textoDescriptografado = "";
+    for (let i = 0; i < textoCriptografado.length; i++) {
+      let letra = textoCriptografado.charAt(i);
+      if (letra.match(/[a-z]/i)) {
+        // se a letra for uma letra do alfabeto
+        let codigo = textoCriptografado.charCodeAt(i);
+        if (codigo >= 65 && codigo <= 90) {
+          // letra maiúscula
+          letra = String.fromCharCode(((codigo - 65 - chave + 26) % 26) + 65);
+        } else if (codigo >= 97 && codigo <= 122) {
+          // letra minúscula
+          letra = String.fromCharCode(((codigo - 97 - chave + 26) % 26) + 97);
+        }
+      }
+      textoDescriptografado += letra;
+    }
+    setTextoCriptografado(textoDescriptografado);
+  };  
 
   const handleBotaoClicado = () => {
     setImagemExibida(false);
