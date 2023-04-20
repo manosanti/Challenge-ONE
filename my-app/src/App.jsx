@@ -11,6 +11,14 @@ function App() {
   const [imagemExibida, setImagemExibida] = useState(true);
   const [textoExibido, setTextoExibido] = useState(true);
   const [textoNãoExibido, setTextoNãoExibido] = useState(false);
+  const [exibirPopup, setExibirPopup] = useState(false);
+
+  const handleCopiarTexto = () => {
+    setExibirPopup(true);
+    setTimeout(() => {
+      setExibirPopup(false);
+    }, 2000);
+  }
 
   const handleCriptografar = () => {
   const chave = 3;
@@ -52,10 +60,6 @@ function App() {
     setImagemExibida(false);
     setTextoExibido(false);
   }
-
-  const mostrarTextoDescriptografado = () => {
-    setTextoDescriptografado(false)
-  }
     
   const mostrarBotaoCopiar = () => {
     setTextoNãoExibido(true);
@@ -70,16 +74,26 @@ function App() {
   const handleDescriptografarEClicado = () => {
     handleDescriptografar()
     handleBotaoClicado()
-    mostrarTextoDescriptografado()
   }
 
   function copiarTexto () {
     navigator.clipboard.writeText(texto)
   }
 
+  const copiarTextoPopUp = () => {
+    handleCopiarTexto()
+    copiarTexto()
+  }
+
   return (
     <Container>
-      <a href="#"><img src={Logo} alt='Alura Logo' style={{position: 'fixed'}} /></a>
+              <a href="/outra-rota" onClick={(e) => {
+        e.preventDefault();
+        window.location.reload();
+        window.location.href = "/outra-rota";
+        }}>
+        <img src={Logo} alt='Alura Logo' style={{position: 'fixed'}} />
+        </a>
 
       <TypeText>
         <textarea value={texto} onChange={(e) => setTexto(e.target.value)} placeholder='Digite aqui o texto'></textarea>
@@ -98,6 +112,7 @@ function App() {
 
       <ShowText>
         <div>
+
           {imagemExibida &&
           <img src={NotFoundText} alt='' />}
 
@@ -111,13 +126,19 @@ function App() {
             criptografar ou descriptografar.</p>
           }
           {textoNãoExibido &&
-          <button className='copyButton' onClick={copiarTexto}>Copiar</button>
+          <button className='copyButton' onClick={copiarTextoPopUp}>Copiar</button>
           }
+          {exibirPopup ? (
+          <div>
+            <h3>*Texto copiado!*</h3>
+          </div>
+          ) : null}
         </div>
       </ShowText>
     </Container>
   )
 }
+
 
 export default App
 
@@ -159,6 +180,11 @@ const ShowText = styled.div`
 
     div {
       margin: auto 0;
+
+      h3 {
+      color: #2b9348;
+      font-weight: 500;
+      }
     }
 `
 
