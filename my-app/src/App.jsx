@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import Logo from '../src/img/AluraLogo.svg'
 import NotFoundText from '../src/img/NotFoundText.svg'
 import CautionIcon from '../src/img/Caution.svg'
-import CryptoJS from 'crypto-js'
 import { useState } from 'react'
 
 function App() {
@@ -11,67 +10,76 @@ function App() {
   const [textoCriptografado, setTextoCriptografado] = useState("");
   const [imagemExibida, setImagemExibida] = useState(true);
   const [textoExibido, setTextoExibido] = useState(true);
+  const [textoNãoExibido, setTextoNãoExibido] = useState(false);
 
   const handleCriptografar = () => {
-    const chave = 3; // quantidade de casas que a letra será deslocada
-    let textoCript = "";
-    for (let i = 0; i < texto.length; i++) {
-      let letra = texto.charAt(i);
-      if (letra.match(/[a-z]/i)) {
-        // se a letra for uma letra do alfabeto
-        let codigo = texto.charCodeAt(i);
-        if (codigo >= 65 && codigo <= 90) {
-          // letra maiúscula
-          letra = String.fromCharCode(((codigo - 65 + chave) % 26) + 65);
-        } else if (codigo >= 97 && codigo <= 122) {
-          // letra minúscula
-          letra = String.fromCharCode(((codigo - 97 + chave) % 26) + 97);
-        }
+  const chave = 3;
+  let textoCript = "";
+  for (let i = 0; i < texto.length; i++) {
+    let letra = texto.charAt(i);
+    if (letra.match(/[a-z]/i)) {
+      let codigo = texto.charCodeAt(i);
+      if (codigo >= 65 && codigo <= 90) {
+        letra = String.fromCharCode(((codigo - 65 + chave) % 26) + 65);
+      } else if (codigo >= 97 && codigo <= 122) {
+        letra = String.fromCharCode(((codigo - 97 + chave) % 26) + 97);
       }
-      textoCript += letra;
     }
-    setTextoCriptografado(textoCript);
-  };
-  
+    textoCript += letra;
+  }
+  setTextoCriptografado(textoCript);
+};
+
   const handleDescriptografar = () => {
-    const chave = 3; // quantidade de casas que a letra foi deslocada
-    let textoDescriptografado = "";
-    for (let i = 0; i < textoCriptografado.length; i++) {
-      let letra = textoCriptografado.charAt(i);
-      if (letra.match(/[a-z]/i)) {
-        // se a letra for uma letra do alfabeto
-        let codigo = textoCriptografado.charCodeAt(i);
-        if (codigo >= 65 && codigo <= 90) {
-          // letra maiúscula
-          letra = String.fromCharCode(((codigo - 65 - chave + 26) % 26) + 65);
-        } else if (codigo >= 97 && codigo <= 122) {
-          // letra minúscula
-          letra = String.fromCharCode(((codigo - 97 - chave + 26) % 26) + 97);
-        }
+  const chave = 3;
+  let textoDescriptografado = "";
+  for (let i = 0; i < textoCriptografado.length; i++) {
+    let letra = textoCriptografado.charAt(i);
+    if (letra.match(/[a-z]/i)) {
+      let codigo = textoCriptografado.charCodeAt(i);
+      if (codigo >= 65 && codigo <= 90) {
+        letra = String.fromCharCode(((codigo - 65 - chave + 26) % 26) + 65);
+      } else if (codigo >= 97 && codigo <= 122) {
+        letra = String.fromCharCode(((codigo - 97 - chave + 26) % 26) + 97);
       }
-      textoDescriptografado += letra;
     }
-    setTextoCriptografado(textoDescriptografado);
-  };  
+    textoDescriptografado += letra;
+  }
+  setTextoCriptografado(textoDescriptografado);
+};
 
   const handleBotaoClicado = () => {
     setImagemExibida(false);
     setTextoExibido(false);
   }
+
+  const mostrarTextoDescriptografado = () => {
+    setTextoDescriptografado(false)
+  }
     
+  const mostrarBotaoCopiar = () => {
+    setTextoNãoExibido(true);
+  }
+
   const handleCriptografarEClicado = () => {
     handleCriptografar()
     handleBotaoClicado()
+    mostrarBotaoCopiar()
   }
   
   const handleDescriptografarEClicado = () => {
     handleDescriptografar()
     handleBotaoClicado()
+    mostrarTextoDescriptografado()
+  }
+
+  function copiarTexto () {
+    navigator.clipboard.writeText(texto)
   }
 
   return (
     <Container>
-      <img src={Logo} alt='Alura Logo' style={{position: 'fixed'}} />
+      <a href="#"><img src={Logo} alt='Alura Logo' style={{position: 'fixed'}} /></a>
 
       <TypeText>
         <textarea value={texto} onChange={(e) => setTexto(e.target.value)} placeholder='Digite aqui o texto'></textarea>
@@ -96,10 +104,15 @@ function App() {
           <h1 className='textoCriptografado'>{textoCriptografado}</h1>
           
           {textoExibido &&
-          <h1>Nenhuma mensagem encontrada</h1>}
+            <h1>Nenhuma mensagem encontrada</h1>
+          }
           {textoExibido &&
-          <p>Digite um texto que você deseja<br></br>
-            criptografar ou descriptografar.</p>}
+            <p>Digite um texto que você deseja<br></br>
+            criptografar ou descriptografar.</p>
+          }
+          {textoNãoExibido &&
+          <button className='copyButton' onClick={copiarTexto}>Copiar</button>
+          }
         </div>
       </ShowText>
     </Container>
@@ -125,6 +138,8 @@ const ShowText = styled.div`
     padding: 5% 0;
     text-align: center;
     margin-left: 6%;
+    overflow-y: hidden;
+    overflow-x: hidden;
 
     img {
     margin: 0 auto;
@@ -139,6 +154,7 @@ const ShowText = styled.div`
     p {
       color: #495057;
       font-weight: 500;
+      margin-bottom: 40%;
     }
 
     div {
@@ -175,6 +191,7 @@ const TypeText = styled.div`
 const Buttons = styled.div`
     position: absolute;
     bottom: 10%;
+    
 
     div {
       padding-bottom: 10px;

@@ -1,5 +1,6 @@
 .colorButton {
-    margin-right: 10px;
+    cursor: pointer;
+    margin-right: 30px;
     color: white;
     border: none;
     padding: 4% 70px;
@@ -9,14 +10,25 @@
     background: -moz-linear-gradient(160deg, hsla(192, 95%, 50%, 1) 0%, hsla(225, 89%, 47%, 1) 100%);
     background: -webkit-linear-gradient(160deg, hsla(192, 95%, 50%, 1) 0%, hsla(225, 89%, 47%, 1) 100%);
     filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#07c8f9", endColorstr="#0d41e1", GradientType=1 );
+    transition: .2s;
+}
+
+.colorButton:hover {
+    transform: scale(1.1);
 }
 
 .notColorButton {
+    cursor: pointer;
     border: 2px solid #0A3871;
     padding: 4% 70px;
     border-radius: 50px;
     color: #0A3871;
-    background-color: #D8DFE8;
+    background-color: white;
+    transition: .2s;
+}
+
+.notColorButton:hover {
+    transform: scale(1.1);
 }
 
 .textoCriptografado {
@@ -27,4 +39,18 @@
     text-align: center;
     width: 100%;
     height: min-content;
+}
+
+.copyButton {
+    font-size: 18px;
+    width: 80%;
+    height: 70px;
+    border-radius: 18px;
+    border: 2px solid #0A3871;
+    background-color: white;
+    transition: .2s;
+}
+
+.copyButton:hover {
+    transform: scale(1.1);
 }
