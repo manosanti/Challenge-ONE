@@ -4,6 +4,8 @@ import Logo from '../src/img/AluraLogo.svg'
 import NotFoundText from '../src/img/NotFoundText.svg'
 import CautionIcon from '../src/img/Caution.svg'
 import { useState } from 'react'
+import { BsGithub } from 'react-icons/bs'
+import { FaLinkedin } from 'react-icons/fa'
 
 function App() {
   const [texto, setTexto] = useState("");
@@ -13,30 +15,24 @@ function App() {
   const [textoNãoExibido, setTextoNãoExibido] = useState(false);
   const [exibirPopup, setExibirPopup] = useState(false);
 
-  const handleCopiarTexto = () => {
-    setExibirPopup(true);
-    setTimeout(() => {
-      setExibirPopup(false);
-    }, 2000);
-  }
-
+  
   const handleCriptografar = () => {
-  const chave = 3;
-  let textoCript = "";
-  for (let i = 0; i < texto.length; i++) {
-    let letra = texto.charAt(i);
-    if (letra.match(/[a-z]/i)) {
-      let codigo = texto.charCodeAt(i);
-      if (codigo >= 65 && codigo <= 90) {
-        letra = String.fromCharCode(((codigo - 65 + chave) % 26) + 65);
-      } else if (codigo >= 97 && codigo <= 122) {
-        letra = String.fromCharCode(((codigo - 97 + chave) % 26) + 97);
+    const chave = 3;
+    let textoCript = "";
+    for (let i = 0; i < texto.length; i++) {
+      let letra = texto.charAt(i);
+      if (letra.match(/[a-z]/i)) {
+        let codigo = texto.charCodeAt(i);
+        if (codigo >= 65 && codigo <= 90) {
+          letra = String.fromCharCode(((codigo - 65 + chave) % 26) + 65);
+        } else if (codigo >= 97 && codigo <= 122) {
+          letra = String.fromCharCode(((codigo - 97 + chave) % 26) + 97);
+        }
       }
+      textoCript += letra;
     }
-    textoCript += letra;
-  }
-  setTextoCriptografado(textoCript);
-};
+    setTextoCriptografado(textoCript);
+  };
 
   const handleDescriptografar = () => {
   const chave = 3;
@@ -55,6 +51,13 @@ function App() {
   }
   setTextoCriptografado(textoDescriptografado);
 };
+
+  const handleCopiarTexto = () => {
+    setExibirPopup(true);
+    setTimeout(() => {
+      setExibirPopup(false);
+    }, 2000);
+  }
 
   const handleBotaoClicado = () => {
     setImagemExibida(false);
@@ -87,13 +90,13 @@ function App() {
 
   return (
     <Container>
-              <a href="/outra-rota" onClick={(e) => {
-        e.preventDefault();
-        window.location.reload();
-        window.location.href = "/outra-rota";
+      <a href="/" onClick={() => { 
+        window.location.reload(); 
+        window.location.href = "/"; 
         }}>
-        <img src={Logo} alt='Alura Logo' style={{position: 'fixed'}} />
-        </a>
+        <img src={Logo} alt="Alura Logo" style={{ position: 'fixed' }} />
+      </a>
+
 
       <TypeText>
         <textarea value={texto} onChange={(e) => setTexto(e.target.value)} placeholder='Digite aqui o texto'></textarea>
@@ -135,6 +138,12 @@ function App() {
           ) : null}
         </div>
       </ShowText>
+      <Footer>
+        <p>Desenvolvido por: <b>Lucas Santiago</b>
+          <a href="https://github.com/manosanti" target='_blank'> <BsGithub /></a>
+          <a href="https://www.linkedin.com/in/santiagolucas1/" target='_blank'> <FaLinkedin /></a>
+        </p>
+      </Footer>
     </Container>
   )
 }
@@ -228,5 +237,28 @@ const Buttons = styled.div`
         color: #495057;
         margin-left: 10px;
       }
+    }
+`
+
+const Footer = styled.div`
+    flex-direction: row;
+    position: fixed;
+    bottom: 0%;
+    left: 0%;
+    background-color: #d8dfe83d;
+    width: 100%;
+    height: 20px;
+
+    p {
+      text-align: center;
+
+      a {
+        text-decoration: none;
+        color: #495057;
+      }
+
+      a:hover {
+          color: rgb(52, 58, 64);
+        }
     }
 `

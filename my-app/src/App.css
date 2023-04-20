@@ -51,10 +51,6 @@
     transition: .2s;
 }
 
-span {
-    color: #2b9348;
-}
-
 .copyButton:hover {
     transform: scale(1.1);
 }
